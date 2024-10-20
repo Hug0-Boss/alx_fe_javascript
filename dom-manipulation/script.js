@@ -147,6 +147,9 @@ window.onload = function() {
 
 
 
+// Initialize an array to hold quotes
+let quotes = [];
+
 // Load existing quotes from local storage
 function loadQuotes() {
     const storedQuotes = localStorage.getItem('quotes');
@@ -167,7 +170,7 @@ async function fetchQuotesFromServer() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/posts'); // Mock API
         const serverQuotes = await response.json();
-        
+
         // Transform server data to fit our quote structure
         const formattedQuotes = serverQuotes.map(post => ({
             text: post.title, // Use post title as quote text
@@ -177,6 +180,28 @@ async function fetchQuotesFromServer() {
         resolveConflicts(formattedQuotes); // Handle conflicts
     } catch (error) {
         console.error('Error fetching quotes:', error);
+    }
+}
+
+// Function to post a new quote to the server
+async function postQuoteToServer(newQuote) {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Setting content type to JSON
+            },
+            body: JSON.stringify(newQuote), // Sending the new quote as JSON
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json(); // Process the response (optional)
+        console.log('Quote posted successfully:', result);
+    } catch (error) {
+        console.error('Error posting quote:', error);
     }
 }
 
@@ -258,7 +283,7 @@ function showRandomQuote() {
 }
 
 // Function to add a new quote
-function addQuote() {
+async function addQuote() {
     const quoteTextInput = document.getElementById('newQuoteText');
     const quoteCategoryInput = document.getElementById('newQuoteCategory');
     
@@ -266,7 +291,9 @@ function addQuote() {
     const newQuoteCategory = quoteCategoryInput.value.trim();
 
     if (newQuoteText && newQuoteCategory) {
-        quotes.push({ text: newQuoteText, category: newQuoteCategory });
+        const newQuote = { text: newQuoteText, category: newQuoteCategory };
+        quotes.push(newQuote);
+        await postQuoteToServer(newQuote); // Post the new quote to the server
         saveQuotes(); // Save to local storage
         quoteTextInput.value = '';
         quoteCategoryInput.value = '';
@@ -357,4 +384,5 @@ window.onload = function() {
     filterQuotes(); // Display quotes based on the last selected category
     createAddQuoteForm();
     fetchQuotesFromServer(); // Initial fetch from server
+
 };
