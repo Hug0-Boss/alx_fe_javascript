@@ -1,3 +1,5 @@
+
+
 // Initialize an array to hold quotes
 let quotes = [
     { text: "The best way to predict the future is to invent it.", category: "Innovation" },
@@ -31,8 +33,36 @@ function addQuote() {
     }
 }
 
+// Function to create the add quote form
+function createAddQuoteForm() {
+    const formContainer = document.createElement('div');
+
+    const quoteTextInput = document.createElement('input');
+    quoteTextInput.id = 'newQuoteText';
+    quoteTextInput.type = 'text';
+    quoteTextInput.placeholder = 'Enter a new quote';
+    
+    const quoteCategoryInput = document.createElement('input');
+    quoteCategoryInput.id = 'newQuoteCategory';
+    quoteCategoryInput.type = 'text';
+    quoteCategoryInput.placeholder = 'Enter quote category';
+    
+    const addQuoteButton = document.createElement('button');
+    addQuoteButton.innerText = 'Add Quote';
+    addQuoteButton.onclick = addQuote;
+
+    formContainer.appendChild(quoteTextInput);
+    formContainer.appendChild(quoteCategoryInput);
+    formContainer.appendChild(addQuoteButton);
+
+    document.body.appendChild(formContainer);
+}
+
 // Event listener for button click to show a new quote
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
 
-// Display the first random quote when the page loads
-window.onload = showRandomQuote;
+// Create the add quote form when the page loads
+window.onload = function() {
+    showRandomQuote();
+    createAddQuoteForm();
+};
