@@ -144,6 +144,7 @@ window.onload = function() {
 
 
 
+
 // Load existing quotes from local storage
 function loadQuotes() {
     const storedQuotes = localStorage.getItem('quotes');
@@ -181,7 +182,7 @@ function displayQuotes(quotesToDisplay) {
 
     quotesToDisplay.forEach(quote => {
         const quoteElement = document.createElement('p');
-        quoteElement.innerHTML = `<strong>${quote.category}:</strong> ${quote.text}`;
+        quoteElement.textContent = `${quote.category}: ${quote.text}`; // Using textContent here
         quoteDisplay.appendChild(quoteElement);
     });
 }
@@ -194,7 +195,7 @@ function populateCategories() {
     categories.forEach(category => {
         const option = document.createElement('option');
         option.value = category;
-        option.innerText = category;
+        option.textContent = category; // Using textContent here
         categoryFilter.appendChild(option);
     });
 }
@@ -204,7 +205,7 @@ function showRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const selectedQuote = quotes[randomIndex];
     const quoteDisplay = document.getElementById('quoteDisplay');
-    quoteDisplay.innerHTML = `<p><strong>${selectedQuote.category}:</strong> ${selectedQuote.text}</p>`;
+    quoteDisplay.textContent = `${selectedQuote.category}: ${selectedQuote.text}`; // Using textContent here
     sessionStorage.setItem('lastViewedQuote', JSON.stringify(selectedQuote)); // Store last viewed quote in session storage
 }
 
@@ -246,7 +247,7 @@ function createAddQuoteForm() {
     quoteCategoryInput.placeholder = 'Enter quote category';
     
     const addQuoteButton = document.createElement('button');
-    addQuoteButton.innerText = 'Add Quote';
+    addQuoteButton.textContent = 'Add Quote'; // Using textContent here
     addQuoteButton.onclick = addQuote;
 
     formContainer.appendChild(quoteTextInput);
@@ -305,3 +306,4 @@ window.onload = function() {
     filterQuotes(); // Display quotes based on the last selected category
     createAddQuoteForm();
 };
+
